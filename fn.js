@@ -184,7 +184,7 @@ function populatePlay() {
                 removeClassName(e, "active");
                 addClassName(e, "disabled");
             } else if (i === state[activeCell].value ||
-                        state[activeCell].notes.indexOf(i) !== -1) {
+                       notes && state[activeCell].notes.indexOf(i) !== -1) {
                 removeClassName(e, "disabled");
                 addClassName(e, "active");
             } else {
@@ -195,7 +195,7 @@ function populatePlay() {
     }
     keyboard["clear"].forEach(function(e) {
         if (activeCell !== -1 && (state[activeCell].value !== 0 ||
-                                  state[activeCell].notes.length !== 0)) {
+                                  notes && state[activeCell].notes.length !== 0)) {
             removeClassName(e, "disabled");
         } else {
             addClassName(e, "disabled");
@@ -272,7 +272,7 @@ window.addEventListener("load", function() {
                 notes = false;
             } else {
                 activeCell = i;
-                notes = state[activeCell].notes.length !== 0;
+                notes = state[activeCell].value === 0 && state[activeCell].notes.length !== 0;
             }
             populatePlay();
         }
@@ -312,7 +312,9 @@ window.addEventListener("load", function() {
             }
             var cellState = state[activeCell];
             cellState.value = 0;
-            cellState.notes.splice(0, cellState.notes.length);
+            if (notes) {
+                cellState.notes.splice(0, cellState.notes.length);
+            }
             history.replaceState(state, "");
             populatePlay();
         }
@@ -327,7 +329,6 @@ window.addEventListener("load", function() {
             }
             var cellState = state[activeCell];
             cellState.value = 0;
-            cellState.notes.splice(0, cellState.notes.length);
             notes = !notes;
             history.replaceState(state, "");
             populatePlay();
