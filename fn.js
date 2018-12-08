@@ -341,6 +341,9 @@ window.addEventListener("load", function() {
             if (finished) {
                 return;
             }
+            if (!confirm("Restart puzzle?")) {
+                return;
+            }
             state.forEach(function(cellState) {
                 if (!cellState.fixed) {
                     cellState.value = 0;
