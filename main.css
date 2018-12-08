@@ -1,0 +1,226 @@
+@font-face {
+    font-family: "icon";
+    src: url("icon.woff") format("woff");
+}
+
+* {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+html,
+body,
+body > div {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: sans;
+    color: black;
+    background-color: white;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+#menu,
+#loading,
+#error {
+    text-align: center;
+}
+
+#menu [name=modes],
+#loading p,
+#error p {
+    font-size: 2rem;
+}
+
+#menu [name=modes] a {
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: block;
+}
+
+#play {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#playfield,
+.keyboard {
+    border: 4px solid black;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.cell {
+    cursor: pointer;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    padding: 0;
+    font-size: 7vmin;
+    text-align: center;
+}
+
+#playfield .cell {
+    width: 11.11%;
+    height: 11.11%;
+}
+
+#playfield .row0,
+#playfield .row1,
+#playfield .row3,
+#playfield .row4,
+#playfield .row6,
+#playfield .row7 {
+    border-bottom: 2px dashed black;
+}
+
+#playfield .col0,
+#playfield .col1,
+#playfield .col3,
+#playfield .col4,
+#playfield .col6,
+#playfield .col7 {
+    border-right: 2px dashed black;
+}
+
+.keyboard.vertical {
+    margin-left: .5vmin;
+}
+
+.keyboard.horizontal {
+    margin-top: .5vmin;
+}
+
+.keyboard.vertical .cell {
+    width: 50%;
+    height: 11.11%;
+}
+
+.keyboard.vertical [name=buttonnote] {
+    height: 22.22%;
+}
+
+.keyboard.horizontal .cell {
+    width: 11.11%;
+    height: 50%;
+}
+
+.keyboard.horizontal [name=buttonnote] {
+    width: 22.22%;
+}
+
+#playfield {
+    width: 99vmin;
+    height: 99vmin;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    #play {
+        flex-direction: column;
+    }
+
+    .keyboard.vertical {
+        display: none;
+    }
+
+    .keyboard.horizontal {
+        width: 99vmin;
+        height: 22.23vmin;
+    }
+}
+
+@media (max-aspect-ratio: 1/1) and (min-aspect-ratio: 100/123) {
+    #playfield {
+        width: 80.59vh;
+        height: 80.59vh;
+    }
+
+    .keyboard.horizontal {
+        width: 80.59vh;
+        height: 17.90vh;
+    }
+}
+
+@media (min-aspect-ratio: 1/1),
+       (aspect-ratio: 1/1) {
+    #play {
+        flex-direction: row;
+    }
+
+    .keyboard.vertical {
+        width: 22.23vmin;
+        height: 99vmin;
+    }
+
+    .keyboard.horizontal {
+        display: none;
+    }
+}
+
+@media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 122/100),
+       (aspect-ratio: 1/1) and (max-aspect-ratio: 122/100) {
+    #playfield {
+        width: 80.59vw;
+        height: 80.59vw;
+    }
+
+    .keyboard.vertical {
+        width: 17.90vw;
+        height: 80.59vw;
+    }
+}
+
+.notes {
+    font-size: 2.5vmin;
+    word-wrap: break-word;
+    letter-spacing: 1px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.active {
+    background-color: #ccc;
+}
+
+.fixed {
+    color: white;
+    background-color: #666;
+    cursor: default;
+}
+
+.disabled {
+    color: transparent;
+    cursor: default;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.icon {
+    font-family: "icon";
+}
+
+#win {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    font-size: 50vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+}
