@@ -1,4 +1,5 @@
 const CONFIG_URL = "config.json";
+const restoreHistory = location.search.search(/(^\?|&)restoreHistory(&|$)/) !== -1;
 
 // global configuration
 var config;
@@ -88,6 +89,18 @@ function addClassName(element, name) {
     element.className = s.trim();
 }
 
+function setBackupState(state) {
+    if (restoreHistory) {
+        localStorage.setItem("state", JSON.stringify(state));
+    }
+}
+
+function removeBackupState() {
+    if (restoreHistory) {
+        localStorage.removeItem("state");
+    }
+}
+
 function showScene(scene) {
     [loading, menu, play, error].forEach(function (e) {
         if (e === scene) {
@@ -108,6 +121,7 @@ function populateMenu() {
         link.onclick = function() {
             var newState = randomState(m);
             history.pushState(newState, "");
+            setBackupState(newState);
             startGame(newState);
         };
         modes.appendChild(link);
@@ -230,6 +244,18 @@ function startGame(newState) {
     showScene(play);
 }
 
+(function() {
+    if (history.state === null) {
+        history.replaceState(false, "");
+        if (restoreHistory) {
+            var jsonState = localStorage.getItem("state");
+            if (jsonState) {
+                history.pushState(JSON.parse(jsonState), "");
+            }
+        }
+    }
+})();
+
 window.addEventListener("load", function() {
     loading = document.querySelector("#loading");
     menu = document.querySelector("#menu");
@@ -299,6 +325,7 @@ window.addEventListener("load", function() {
                 finished = checkFinished();
             }
             history.replaceState(state, "");
+            setBackupState(state);
             populatePlay();
         }
         keyboard[i].forEach(function(e) {
@@ -316,6 +343,7 @@ window.addEventListener("load", function() {
                 cellState.notes.splice(0, cellState.notes.length);
             }
             history.replaceState(state, "");
+            setBackupState(state);
             populatePlay();
         }
         keyboard["clear"].forEach(function(e) {
@@ -331,6 +359,7 @@ window.addEventListener("load", function() {
             cellState.value = 0;
             notes = !notes;
             history.replaceState(state, "");
+            setBackupState(state);
             populatePlay();
         }
         keyboard["note"].forEach(function(e) {
@@ -352,6 +381,7 @@ window.addEventListener("load", function() {
                 cellState.notes.splice(0, cellState.notes.length);
             });
             history.replaceState(state, "");
+            setBackupState(state);
             startGame(state);
         }
         keyboard["restart"].forEach(function(e) {
@@ -386,12 +416,15 @@ window.addEventListener("load", function() {
             if (history.state) {
                 startGame(history.state);
             } else {
+                removeBackupState();
                 showScene(menu);
             }
             window.onpopstate = function() {
                 if (history.state) {
+                    setBackupState(history.state);
                     startGame(history.state);
                 } else {
+                    removeBackupState();
                     showScene(menu);
                 }
             };
