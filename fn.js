@@ -20,6 +20,7 @@ var modes;
 var state;
 var activeCell;
 var notes;
+var validCells = Array.apply(null, Array(9 * 9));
 var finished;
 
 function fullscreenEnabled() {
@@ -129,8 +130,7 @@ function populateMenu() {
     copyright.innerHTML = config["copyright"];
 }
 
-function randomState(mode) {
-    var puzzle = mode.puzzles[Math.floor(Math.random() * mode.puzzles.length)];
+function makeState(puzzle) {
     var newState = [];
     for (var i = 0; i < puzzle.length; i++) {
         var value = parseInt(puzzle[i]);
@@ -143,11 +143,19 @@ function randomState(mode) {
     return newState;
 }
 
-function checkFinished() {
+function randomState(mode) {
+    var puzzle = mode.puzzles[Math.floor(Math.random() * mode.puzzles.length)];
+    return makeState(puzzle);
+}
+
+function updateValidCells() {
+    var rowSets = Array.apply(null, Array(9));
+    var colSets = Array.apply(null, Array(9));
+    var boxSets = Array.apply(null, Array(9));
     for (var i = 0; i < 9; i++) {
-        var rowSet = Array.apply(null, Array(10)).map(function(_, i) {return i === 0;});
-        var colSet = Array.apply(null, Array(10)).map(function(_, i) {return i === 0;});
-        var boxSet = Array.apply(null, Array(10)).map(function(_, i) {return i === 0;});
+        rowSets[i] = Array.apply(null, Array(10)).map(function() {return [];});
+        colSets[i] = Array.apply(null, Array(10)).map(function() {return [];});
+        boxSets[i] = Array.apply(null, Array(10)).map(function() {return [];});
         for (var j = 0; j < 9; j++) {
             var rowValue = state[i * 9 + j].value;
             var colValue = state[i + j * 9].value;
@@ -156,16 +164,32 @@ function checkFinished() {
             var boxCellCol = boxCol + (j % 3);
             var boxCellRow = boxRow + Math.floor(j / 3);
             var boxValue = state[boxCellCol + boxCellRow * 9].value;
-            if (rowSet[rowValue] || colSet[colValue] || boxSet[boxValue]) {
-                return false;
-            }
-            rowSet[rowValue] = true;
-            colSet[colValue] = true;
-            boxSet[boxValue] = true;
+            rowSets[i][rowValue].push(j);
+            colSets[i][colValue].push(j);
+            boxSets[i][boxValue].push(j);
         }
     }
-    return true;
+    for (var row = 0; row < 9; row++) {
+        for (var col = 0; col < 9; col++) {
+            var cellIndex = row * 9 + col;
+            var value = state[cellIndex].value;
+            var boxIndex = 3 * Math.floor(row / 3) + Math.floor(col / 3);
+            validCells[cellIndex] = (
+                value !== 0 &&
+                rowSets[row][value].length === 1 &&
+                colSets[col][value].length === 1 &&
+                boxSets[boxIndex][value].length === 1);
+        }
+    }
+    finished = true;
+    for (var i = 0; i < validCells.length; i++) {
+        if (!validCells[i]) {
+            finished = false;
+            break;
+        }
+    }
 }
+
 function populatePlay() {
     for (var i = 0; i < 9 * 9; i++) {
         var cellState = state[i];
@@ -175,15 +199,18 @@ function populatePlay() {
         } else {
             removeClassName(cell, "fixed");
         }
+        removeClassName(cell, "notes");
+        removeClassName(cell, "invalid");
         if (cellState.value !== 0) {
-            removeClassName(cell, "notes");
+            if (!cellState.fixed && !validCells[i]) {
+                addClassName(cell, "invalid");
+            }
             cell.textContent = cellState.value;
         } else if (cellState.notes.length !== 0) {
             cell.textContent = cellState.notes.join("");
             addClassName(cell, "notes");
         } else {
             cell.textContent = "";
-            removeClassName(cell, "notes");
         }
         if (i === activeCell) {
             addClassName(cell, "active");
@@ -239,7 +266,7 @@ function startGame(newState) {
     state = newState;
     activeCell = -1;
     notes = false;
-    finished = checkFinished();
+    updateValidCells();
     populatePlay();
     showScene(play);
 }
@@ -320,9 +347,10 @@ window.addEventListener("load", function() {
                 }
             } else if (cellState.value === i) {
                 cellState.value = 0;
+                updateValidCells();
             } else {
                 cellState.value = i;
-                finished = checkFinished();
+                updateValidCells();
             }
             history.replaceState(state, "");
             setBackupState(state);
@@ -338,7 +366,10 @@ window.addEventListener("load", function() {
                 return;
             }
             var cellState = state[activeCell];
-            cellState.value = 0;
+            if (cellState.value !== 0) {
+                cellState.value = 0;
+                updateValidCells();
+            }
             if (notes) {
                 cellState.notes.splice(0, cellState.notes.length);
             }
@@ -356,7 +387,10 @@ window.addEventListener("load", function() {
                 return;
             }
             var cellState = state[activeCell];
-            cellState.value = 0;
+            if (cellState.value !== 0) {
+                cellState.value = 0;
+                updateValidCells();
+            }
             notes = !notes;
             history.replaceState(state, "");
             setBackupState(state);

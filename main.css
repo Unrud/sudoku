@@ -181,6 +181,11 @@ h1 {
     }
 }
 
+.invalid {
+    text-decoration: underline;
+    text-decoration: underline wavy;
+}
+
 .notes {
     font-size: 3vmin;
     word-wrap: break-word;
