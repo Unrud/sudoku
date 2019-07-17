@@ -1,0 +1,17 @@
+{
+    "name": "Sudoku",
+    "short_name": "Sudoku",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "index.html?restoreHistory",
+    "display": "standalone",
+    "orientation": "any",
+    "serviceworker": {"src": "sw.js" },
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff"
+}

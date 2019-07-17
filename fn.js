@@ -1,3 +1,7 @@
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+};
+
 const CONFIG_URL = "config.json";
 const restoreHistory = location.search.search(/(^\?|&)restoreHistory(&|$)/) !== -1;
 
