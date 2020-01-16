@@ -275,11 +275,11 @@ function startGame(newState) {
 window.addEventListener("load", function() {
     loading = document.querySelector("#loading");
     menu = document.querySelector("#menu");
-    modes = menu.querySelector("[name=modes]");
-    copyright = menu.querySelector("[name=copyright]");
+    modes = menu.querySelector("[data-name=modes]");
+    copyright = menu.querySelector("[data-name=copyright]");
     play = document.querySelector("#play");
     error = document.querySelector("#error");
-    errorMessage = error.querySelector("[name=message]");
+    errorMessage = error.querySelector("[data-name=message]");
     cells = [];
     for (var i = 0; i < 9 * 9; i++) {
         var row = Math.floor(i / 9);
@@ -288,7 +288,7 @@ window.addEventListener("load", function() {
     }
     keyboard = {};
     ["restart", "fullscreen", 1, 2, 3, 4, 5, 6, 7, 8, 9, "note", "clear"].forEach(function(n) {
-        keyboard[n] = Array.prototype.slice.call(play.querySelectorAll("[name=button" + n + "]"));
+        keyboard[n] = Array.prototype.slice.call(play.querySelectorAll("[data-name=button" + n + "]"));
     });
     win = play.querySelector("#win");
 

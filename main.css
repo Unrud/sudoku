@@ -32,13 +32,13 @@ h1 {
     text-align: center;
 }
 
-#menu [name=modes],
+#menu [data-name=modes],
 #loading p,
 #error p {
     font-size: 2rem;
 }
 
-#menu [name=modes] a {
+#menu [data-name=modes] a {
     cursor: pointer;
     color: black;
     text-decoration: none;
@@ -107,7 +107,7 @@ h1 {
     height: 11.11%;
 }
 
-.keyboard.vertical [name=buttonnote] {
+.keyboard.vertical [data-name=buttonnote] {
     height: 22.22%;
 }
 
@@ -116,7 +116,7 @@ h1 {
     height: 50%;
 }
 
-.keyboard.horizontal [name=buttonnote] {
+.keyboard.horizontal [data-name=buttonnote] {
     width: 22.22%;
 }
 
