@@ -1,102 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width initial-scale=1, maximum-scale=1, user-scalable=0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <script src="fn.js"></script>
-    <link rel="manifest" href="sudoku.webmanifest" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Sudoku</title>
-    <link href="main.css" media="screen" rel="stylesheet" />
-    <link href="icon.png" type="image/png" rel="shortcut icon" />
-</head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="fn.js"></script>
+<link rel="manifest" href="sudoku.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<title>Sudoku</title>
+<link href="main.css" media="screen" rel="stylesheet">
+<link href="icon.png" type="image/png" rel="shortcut icon">
 
-<body>
-    <div id="loading">
-        <h1>Loading</h1>
-        <p>Please wait...</p>
-        <noscript>JavaScript is required</noscript>
-    </div>
-    <div id="menu" class="hidden">
-        <h1>Sudoku</h1>
-        <p name="modes">
-            <!-- <a href="#">Example</a> -->
-        </p>
-        <p name="copyright"></p>
-    </div>
-    <div id="play" class="hidden">
-        <table id="playfield">
-            <script>
-                var playfield = document.querySelector("#playfield");
-                for (var row = 0; row < 9; row++) {
-                    var rowElement = document.createElement("tr");
-                    for (var col = 0; col < 9; col++) {
-                        var cell = document.createElement("td");
-                        cell.className = "cell col" + col + " row" + row;
-                        rowElement.appendChild(cell);
-                    }
-                    playfield.appendChild(rowElement);
+<div id="loading">
+    <h1>Loading</h1>
+    <p>Please wait...</p>
+    <noscript>JavaScript is required</noscript>
+</div>
+
+<div id="menu" class="hidden">
+    <h1>Sudoku</h1>
+    <p name="modes">
+        <!-- <a href="#">Example</a> -->
+    </p>
+    <p name="copyright"></p>
+</div>
+
+<div id="play" class="hidden">
+    <table id="playfield">
+        <script>
+            var playfield = document.querySelector("#playfield");
+            for (var row = 0; row < 9; row++) {
+                var rowElement = document.createElement("tr");
+                for (var col = 0; col < 9; col++) {
+                    var cell = document.createElement("td");
+                    cell.className = "cell col" + col + " row" + row;
+                    rowElement.appendChild(cell);
                 }
-            </script>
-        </table>
-        <table class="keyboard vertical">
-            <tr>
-                <td name="buttonrestart" class="cell icon" colspan="2">↻</td>
-            </tr>
-            <tr>
-                <td name="buttonfullscreen" class="cell icon" colspan="2">⤢</td>
-            </tr>
-            <tr>
-                <td name="button1" class="cell">1</td>
-                <td name="button2" class="cell">2</td>
-            </tr>
-            <tr>
-                <td name="button3" class="cell">3</td>
-                <td name="button4" class="cell">4</td>
-            </tr>
-            <tr>
-                <td name="button5" class="cell">5</td>
-                <td name="button6" class="cell">6</td>
-            </tr>
-            <tr>
-                <td name="button7" class="cell">7</td>
-                <td name="button8" class="cell">8</td>
-            </tr>
-            <tr>
-                <td name="button9" class="cell">9</td>
-                <td name="buttonclear" class="cell icon">⌫</td>
-            </tr>
-            <tr>
-                <td name="buttonnote" class="cell icon" colspan="2">✎</td>
-            </tr>
-        </table>
-        <table class="keyboard horizontal">
-            <tr>
-                <td name="buttonrestart" class="cell icon" rowspan="2">↻</td>
-                <td name="buttonfullscreen" class="cell icon" rowspan="2">⤢</td>
-                <td name="button1" class="cell">1</td>
-                <td name="button2" class="cell">2</td>
-                <td name="button3" class="cell">3</td>
-                <td name="button4" class="cell">4</td>
-                <td name="button5" class="cell">5</td>
-                <td name="buttonnote" class="cell icon" rowspan="2">✎</td>
-            </tr>
-            <tr>
-                <td name="button6" class="cell">6</td>
-                <td name="button7" class="cell">7</td>
-                <td name="button8" class="cell">8</td>
-                <td name="button9" class="cell">9</td>
-                <td name="buttonclear" class="cell icon">⌫</td>
-            </tr>
-        </table>
-        <div id="win" class="icon">☺</div>
-    </div>
-    <div id="error" class="hidden">
-        <h1>Error</h1>
-        <p name="message"></p>
-    </div>
-</body>
+                playfield.appendChild(rowElement);
+            }
+        </script>
+    </table>
+    <table class="keyboard vertical">
+        <tr>
+            <td name="buttonrestart" class="cell icon" colspan="2">↻</td>
+        </tr>
+        <tr>
+            <td name="buttonfullscreen" class="cell icon" colspan="2">⤢</td>
+        </tr>
+        <tr>
+            <td name="button1" class="cell">1</td>
+            <td name="button2" class="cell">2</td>
+        </tr>
+        <tr>
+            <td name="button3" class="cell">3</td>
+            <td name="button4" class="cell">4</td>
+        </tr>
+        <tr>
+            <td name="button5" class="cell">5</td>
+            <td name="button6" class="cell">6</td>
+        </tr>
+        <tr>
+            <td name="button7" class="cell">7</td>
+            <td name="button8" class="cell">8</td>
+        </tr>
+        <tr>
+            <td name="button9" class="cell">9</td>
+            <td name="buttonclear" class="cell icon">⌫</td>
+        </tr>
+        <tr>
+            <td name="buttonnote" class="cell icon" colspan="2">✎</td>
+        </tr>
+    </table>
+    <table class="keyboard horizontal">
+        <tr>
+            <td name="buttonrestart" class="cell icon" rowspan="2">↻</td>
+            <td name="buttonfullscreen" class="cell icon" rowspan="2">⤢</td>
+            <td name="button1" class="cell">1</td>
+            <td name="button2" class="cell">2</td>
+            <td name="button3" class="cell">3</td>
+            <td name="button4" class="cell">4</td>
+            <td name="button5" class="cell">5</td>
+            <td name="buttonnote" class="cell icon" rowspan="2">✎</td>
+        </tr>
+        <tr>
+            <td name="button6" class="cell">6</td>
+            <td name="button7" class="cell">7</td>
+            <td name="button8" class="cell">8</td>
+            <td name="button9" class="cell">9</td>
+            <td name="buttonclear" class="cell icon">⌫</td>
+        </tr>
+    </table>
+    <div id="win" class="icon">☺</div>
+</div>
 
-</html>
+<div id="error" class="hidden">
+    <h1>Error</h1>
+    <p name="message"></p>
+</div>
