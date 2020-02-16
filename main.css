@@ -3,20 +3,17 @@
     src: url("icon.woff") format("woff");
 }
 
-* {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
 html,
 body,
 body > div {
     width: 100%;
     height: 100%;
     margin: 0;
-    font-family: sans;
+    font-family: sans-serif;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     color: black;
     background-color: white;
     overflow: hidden;
