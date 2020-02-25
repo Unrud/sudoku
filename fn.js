@@ -2,11 +2,7 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js");
 };
 
-const CONFIG_URL = "config.json";
 const restoreHistory = location.search.search(/(^\?|&)restoreHistory(&|$)/) !== -1;
-
-// global configuration
-var config;
 
 // HTML elements
 var loading;
@@ -427,34 +423,20 @@ window.addEventListener("load", function() {
         });
     })();
 
-    var request = new XMLHttpRequest();
-    request.open("GET", CONFIG_URL);
-    request.onreadystatechange = function() {
-        if (request.readyState !== 4) {
-            return;
-        }
-        if (request.status === 200) {
-            config = JSON.parse(request.responseText);
-            populateMenu();
-            if (history.state) {
-                startGame(history.state);
-            } else {
-                removeBackupState();
-                showScene(menu);
-            }
-            window.onpopstate = function() {
-                if (history.state) {
-                    setBackupState(history.state);
-                    startGame(history.state);
-                } else {
-                    removeBackupState();
-                    showScene(menu);
-                }
-            };
+    populateMenu();
+    if (history.state) {
+        startGame(history.state);
+    } else {
+        removeBackupState();
+        showScene(menu);
+    }
+    window.onpopstate = function() {
+        if (history.state) {
+            setBackupState(history.state);
+            startGame(history.state);
         } else {
-            errorMessage.textContent = request.statusText;
-            showScene(error);
+            removeBackupState();
+            showScene(menu);
         }
     };
-    request.send();
 }, false);
