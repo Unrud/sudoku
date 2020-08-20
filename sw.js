@@ -1,5 +1,5 @@
 // Files to cache
-var cacheName = "sudoku5";
+var cacheName = "sudoku6";
 var contentToCache = [
   ".",
   "config.js",

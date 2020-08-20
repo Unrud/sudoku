@@ -415,7 +415,7 @@ window.addEventListener("load", function() {
             if (fullscreenElement() !== null) {
                 exitFullscreen();
             } else {
-                requestFullscreen(play);
+                requestFullscreen(document.documentElement);
             }
         }
         keyboard["fullscreen"].forEach(function(e) {
