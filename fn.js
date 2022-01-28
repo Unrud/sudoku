@@ -1,8 +1,8 @@
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js");
-};
+}
 
-const restoreHistory = location.search.search(/(^\?|&)restoreHistory(&|$)/) !== -1;
+var restoreHistory = location.search.search(/(^\?|&)restoreHistory(&|$)/) !== -1;
 
 // HTML elements
 var loading;
