@@ -76,22 +76,14 @@ h1 {
     height: 11.11%;
 }
 
-#playfield .row0,
-#playfield .row1,
-#playfield .row3,
-#playfield .row4,
-#playfield .row6,
-#playfield .row7 {
-    border-bottom: 2px dashed black;
+#playfield .row2,
+#playfield .row5 {
+    border-bottom: 4px solid black;
 }
 
-#playfield .col0,
-#playfield .col1,
-#playfield .col3,
-#playfield .col4,
-#playfield .col6,
-#playfield .col7 {
-    border-right: 2px dashed black;
+#playfield .col2,
+#playfield .col5 {
+    border-right: 4px solid black;
 }
 
 .keyboard.vertical {
