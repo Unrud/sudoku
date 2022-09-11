@@ -89,11 +89,7 @@ function removeBackupState() {
 
 function showScene(scene) {
     [loading, menu, play, error].forEach(function (e) {
-        if (e === scene) {
-            e.classList.remove("hidden");
-        } else {
-            e.classList.add("hidden");
-        }
+        e.classList.toggle("hidden", e !== scene);
     });
 }
 
@@ -179,11 +175,7 @@ function populatePlay() {
     for (var i = 0; i < 9 * 9; i++) {
         var cellState = state[i];
         var cell = cells[i];
-        if (cellState.fixed) {
-            cell.classList.add("fixed");
-        } else {
-            cell.classList.remove("fixed");
-        }
+        cell.classList.toggle("fixed", cellState.fixed);
         cell.classList.remove("notes");
         cell.classList.remove("invalid");
         if (cellState.value !== 0) {
@@ -197,54 +189,26 @@ function populatePlay() {
         } else {
             cell.textContent = "";
         }
-        if (i === activeCell) {
-            cell.classList.add("active");
-        } else {
-            cell.classList.remove("active");
-        }
-        
+        cell.classList.toggle("active", i === activeCell);
     }
     for (var i = 1; i <= 9; i++) {
         keyboard[i].forEach(function(e) {
-            if (activeCell === -1) {
-                e.classList.remove("active");
-                e.classList.add("disabled");
-            } else if (i === state[activeCell].value ||
-                       notes && state[activeCell].notes.indexOf(i) !== -1) {
-                e.classList.remove("disabled");
-                e.classList.add("active");
-            } else {
-                e.classList.remove("active");
-                e.classList.remove("disabled");
-            }
+            e.classList.toggle("disabled", activeCell === -1);
+            e.classList.toggle("active", activeCell !== -1 && (
+                i === state[activeCell].value ||
+                notes && state[activeCell].notes.indexOf(i) !== -1));
         });
     }
     keyboard["clear"].forEach(function(e) {
-        if (activeCell !== -1 && (state[activeCell].value !== 0 ||
-                                  notes && state[activeCell].notes.length !== 0)) {
-            e.classList.remove("disabled");
-        } else {
-            e.classList.add("disabled");
-        }
+        e.classList.toggle("disabled", activeCell === -1 ||
+            state[activeCell].value === 0 &&
+            (!notes || state[activeCell].notes.length === 0));
     });
     keyboard["note"].forEach(function(e) {
-        if (activeCell !== -1) {
-            e.classList.remove("disabled");
-            if (notes) {
-                e.classList.add("active");
-            } else {
-                e.classList.remove("active");
-            }
-        } else {
-            e.classList.remove("active");
-            e.classList.add("disabled");
-        }
+        e.classList.toggle("disabled", activeCell === -1);
+        e.classList.toggle("active", activeCell !== -1 && notes);
     });
-    if (finished) {
-        win.classList.remove("hidden");
-    } else {
-        win.classList.add("hidden");
-    }
+    win.classList.toggle("hidden", !finished);
 }
 
 function startGame(newState) {
@@ -292,13 +256,11 @@ window.addEventListener("load", function() {
         keyboard["fullscreen"].forEach(function(e) {e.classList.add("disabled")});
     } else {
         addFullscreenchangeEventListener(function() {
-            if (fullscreenElement() !== null) {
-                keyboard["fullscreen"].forEach(function(e) {e.classList.add("active")});
-            } else {
-                keyboard["fullscreen"].forEach(function(e) {e.classList.remove("active")});
-            }
+            var active = fullscreenElement() !== null;
+            keyboard["fullscreen"].forEach(function(e) {e.classList.toggle("active", active)});
         });
     }
+
     Array.apply(null, Array(9 * 9)).map(function(_, i) {return i;}).forEach(function(i) {
         var cell = cells[i];
         function action() {
