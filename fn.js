@@ -252,15 +252,6 @@ window.addEventListener("load", function() {
     });
     win = play.querySelector("#win");
 
-    if (!fullscreenEnabled()) {
-        keyboard["fullscreen"].forEach(function(e) {e.classList.add("disabled")});
-    } else {
-        addFullscreenchangeEventListener(function() {
-            var active = fullscreenElement() !== null;
-            keyboard["fullscreen"].forEach(function(e) {e.classList.toggle("active", active)});
-        });
-    }
-
     Array.apply(null, Array(9 * 9)).map(function(_, i) {return i;}).forEach(function(i) {
         var cell = cells[i];
         function action() {
@@ -370,8 +361,16 @@ window.addEventListener("load", function() {
         });
     })();
     (function() {
+        var enabled = fullscreenEnabled();
+        keyboard["fullscreen"].forEach(function(e) {e.classList.toggle("disabled", !enabled)});
+        function updateFullscreenActive() {
+            var active = enabled && fullscreenElement() !== null;
+            keyboard["fullscreen"].forEach(function(e) {e.classList.toggle("active", active)});
+        }
+        addFullscreenchangeEventListener(updateFullscreenActive);
+        updateFullscreenActive();
         function action() {
-            if (finished) {
+            if (!enabled || finished) {
                 return;
             }
             if (fullscreenElement() !== null) {
